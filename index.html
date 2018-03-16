@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<body>
+
+    <p id="supportCheck"></p>
+	<p id="accelerationX"></p>
+	<p id="accelerationY"></p>
+	<p id="accelerationZ"></p>
+	<p id="rotationAlpha"></p>
+	<p id="rotationBeta"></p>
+	<p id="rotationGamma"></p>
+
+<script type="text/javascript">
+
+if (window.DeviceMotionEvent != undefined) {
+    window.ondevicemotion = function(e) {
+		document.getElementById("accelerationX").innerHTML = e.accelerationIncludingGravity.x;
+		document.getElementById("accelerationY").innerHTML = e.accelerationIncludingGravity.y;
+		document.getElementById("accelerationZ").innerHTML = e.accelerationIncludingGravity.z;
+
+		if (e.rotationRate) {
+            document.getElementById("rotationAlpha").innerHTML = e.rotationRate.alpha;
+			document.getElementById("rotationBeta").innerHTML = e.rotationRate.beta;
+			document.getElementById("rotationGamma").innerHTML = e.rotationRate.gamma;
+        }
+        if (!e.rotationRate.alpha && !e.rotationRate.beta && !e.rotationRate.gamma) {
+            document.getElementById("supportCheck").innerHTML = "Device Unsupported";
+        }
+	}
+}
+
+</script>
+</body>
+</html>
