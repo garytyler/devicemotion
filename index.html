@@ -1,32 +1,84 @@
 <!DOCTYPE html>
 
+<head>
+<title>Device Accelerometer Values</title>
+<style>
+
+body {
+	font-family: monospace;
+	font-size: 24px;
+}
+
+</style>
+</head>
 <body>
 
-    <p id="supportCheck"></p>
-	<p id="accelerationX"></p>
-	<p id="accelerationY"></p>
-	<p id="accelerationZ"></p>
-	<p id="rotationAlpha"></p>
-	<p id="rotationBeta"></p>
-	<p id="rotationGamma"></p>
+<span id="supportCheck"></span>
 
+<br><b>Acceleration Including Gravity</b></br>
+<p>X<span id="accelerationX" style="margin-left:60px"></span></p>
+<p>Y<span id="accelerationY" style="margin-left:60px"></span></p>
+<p>Z<span id="accelerationZ" style="margin-left:60px"></span></p>
+
+<br><b>Rotation Rate</b></br>
+<p>X<span id="rotationBeta" style="margin-left:60px"></span></p>
+<p>Y<span id="rotationGamma" style="margin-left:60px"></span></p>
+<p>Z<span id="rotationAlpha" style="margin-left:60px"></span></p>
+
+<br><b>Orientation</b></br>
+<p>X<span id="orientationBeta" style="margin-left:60px"></span></p>
+<p>Y<span id="orientationGamma" style="margin-left:60px"></span></p>
+<p>Z<span id="orientationAlpha" style="margin-left:60px"></span></p>
+
+</span>
+</style>
 <script type="text/javascript">
+
+function addPlus (num) {
+	if (num > 0) {
+		return '+' + num;
+	} else {
+		return num
+	}
+}
 
 if (window.DeviceMotionEvent != undefined) {
     window.ondevicemotion = function(e) {
-		document.getElementById("accelerationX").innerHTML = e.accelerationIncludingGravity.x;
-		document.getElementById("accelerationY").innerHTML = e.accelerationIncludingGravity.y;
-		document.getElementById("accelerationZ").innerHTML = e.accelerationIncludingGravity.z;
 
-		if (e.rotationRate) {
-            document.getElementById("rotationAlpha").innerHTML = e.rotationRate.alpha;
-			document.getElementById("rotationBeta").innerHTML = e.rotationRate.beta;
-			document.getElementById("rotationGamma").innerHTML = e.rotationRate.gamma;
-        }
-        if (!e.rotationRate.alpha && !e.rotationRate.beta && !e.rotationRate.gamma) {
-            document.getElementById("supportCheck").innerHTML = "Device Unsupported";
-        }
+		if (!e.accelerationIncludingGravity.x) {
+			document.getElementById("accelerationZ").innerHTML = "Device not supported";
+			document.getElementById("accelerationX").innerHTML = "Device not supported";
+			document.getElementById("accelerationY").innerHTML = "Device not supported";
+		} else {
+			document.getElementById("accelerationZ").innerHTML = addPlus(e.accelerationIncludingGravity.z);
+			document.getElementById("accelerationX").innerHTML = addPlus(e.accelerationIncludingGravity.x);
+			document.getElementById("accelerationY").innerHTML = addPlus(e.accelerationIncludingGravity.y);
+		}
+
+		if (!e.rotationRate.alpha) {
+			document.getElementById("rotationAlpha").innerHTML = "Device not supported";
+			document.getElementById("rotationBeta").innerHTML = "Device not supported";
+			document.getElementById("rotationGamma").innerHTML = "Device not supported";
+		} else {
+			document.getElementById("rotationAlpha").innerHTML = addPlus(e.rotationRate.alpha);
+			document.getElementById("rotationBeta").innerHTML = addPlus(e.rotationRate.beta);
+			document.getElementById("rotationGamma").innerHTML = addPlus(e.rotationRate.gamma);
+		}
 	}
+}
+
+if (window.DeviceOrientationEvent) {
+    window.addEventListener("deviceorientation", function(e) {
+		if (!e.alpha) {
+			document.getElementById("orientationAlpha").innerHTML = "Device not supported";
+			document.getElementById("orientationBeta").innerHTML = "Device not supported";
+			document.getElementById("orientationGamma").innerHTML = "Device not supported";
+		} else {
+			document.getElementById("orientationAlpha").innerHTML = addPlus(e.alpha);
+			document.getElementById("orientationBeta").innerHTML = addPlus(e.beta);
+			document.getElementById("orientationGamma").innerHTML = addPlus(e.gamma);
+		}
+    }, true);
 }
 
 </script>
